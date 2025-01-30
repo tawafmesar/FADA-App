@@ -1,3 +1,4 @@
+import 'package:fada/view/screen/scan_screen.dart';
 import 'package:flutter/material.dart';
 import '../widget/custom_app_bar.dart';
 import '../widget/custom_drawer.dart';
@@ -15,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _pages = [
     Center(child: Text('Home Page', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Scan Page', style: TextStyle(fontSize: 24))),
+    ScanScreen(),
     Center(child: Text('Education Page', style: TextStyle(fontSize: 24))),
     Center(child: Text('History Page', style: TextStyle(fontSize: 24))),
   ];
@@ -23,18 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Example Page',
-        icon: Icons.home,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.update, color: Colors.white),
-            onPressed: () {
-              // Action for search
-            },
-          ),
-        ],
-      ),
       drawer: CustomDrawer(),
       body: _pages[_currentIndex],
       bottomNavigationBar: Container(
