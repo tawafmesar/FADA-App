@@ -25,6 +25,14 @@ class AppLink {
   static const String verifycodeforgetpassword = "$server/forgetpassword/verifycode.php";
 
 
+// ================================= AllergyDB ========================== //
+
+  static const String allergydbview = "$server/allergydb/view.php";
+
+  static const String allergydbadd = "$server/allergydb/add.php";
+  static const String allergydbremove = "$server/allergydb/remove.php";
+  static const String allergydbactive = "$server/allergydb/activateAllergy.php";
+  static const String allergydbdeactive = "$server/allergydb/deactivateAllergy.php";
 
 
 
