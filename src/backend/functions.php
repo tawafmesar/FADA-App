@@ -158,29 +158,39 @@ function deleteData($table, $where, $json = true)
     return $count;
 }
 
-function imageUpload($imageRequest)
-{
-  global $msgError;
-  $imagename  = rand(1000, 10000) . $_FILES[$imageRequest]['name'];
-  $imagetmp   = $_FILES[$imageRequest]['tmp_name'];
-  $imagesize  = $_FILES[$imageRequest]['size'];
-  $allowExt   = array("jpg", "png", "gif", "mp3", "pdf");
-  $strToArray = explode(".", $imagename);
-  $ext        = end($strToArray);
-  $ext        = strtolower($ext);
+function imageUpload($imageRequest) {
+    global $msgError;
+    if (isset($_FILES[$imageRequest])) {
+        $imagename  = rand(1000, 10000) . $_FILES[$imageRequest]['name'];
+        $imagetmp   = $_FILES[$imageRequest]['tmp_name'];
+        $imagesize  = $_FILES[$imageRequest]['size'];
+        $allowExt   = array("jpg", "png", "gif", "mp3", "pdf");
+        $strToArray = explode(".", $imagename);
+        $ext        = end($strToArray);
+        $ext        = strtolower($ext);
 
-  if (!empty($imagename) && !in_array($ext, $allowExt)) {
-    $msgError = "EXT";
-  }
-  if ($imagesize > 2 * MB) {
-    $msgError = "size";
-  }
-  if (empty($msgError)) {
-    move_uploaded_file($imagetmp,  "../upload/" . $imagename);
-    return $imagename;
-  } else {
-    return "fail";
-  }
+        if (!empty($imagename) && !in_array($ext, $allowExt)) {
+            $msgError = "EXT";
+            echo "Invalid file extension.";
+        }
+        if ($imagesize > 2 * 1024 * 1024) { // 2 MB
+            $msgError = "size";
+            echo "File size exceeds 2MB.";
+        }
+        if (empty($msgError)) {
+            if (move_uploaded_file($imagetmp, "../upload/" . $imagename)) {
+                return $imagename;
+            } else {
+                echo "Failed to move the uploaded file.";
+                return "fail";
+            }
+        } else {
+            return "fail";
+        }
+    } else {
+        echo "No file detected in the request.";
+        return null;
+    }
 }
 
 
