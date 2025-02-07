@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:fada/core/constant/color.dart';
+import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'dart:io';
 
+import '../../controller/add_file_controller.dart';
+import '../../core/constant/imageasset.dart';
 import '../widget/custom_app_bar_with_back.dart';
 import '../widget/custom_drawer.dart';
 
@@ -20,6 +25,7 @@ class _RecognizePageState extends State<RecognizePage> {
   bool _hasAllergyWords = false;
   List<String> _foundAllergyWords = [];
   TextEditingController controller = TextEditingController();
+  final AddFileControllerImp addFileController = Get.put(AddFileControllerImp());
 
   @override
   void initState() {
@@ -31,20 +37,16 @@ class _RecognizePageState extends State<RecognizePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarWithBack(
+      appBar:const CustomAppBarWithBack(
         title: "Recognized Text",
         icon: Icons.text_fields,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh, color: Colors.white),
-            onPressed: () => processImage(InputImage.fromFilePath(widget.path!)),
-          ),
-        ],
+
       ),
       drawer: CustomDrawer(),
       body: _isBusy
-          ? const Center(child: CircularProgressIndicator(color: AppColor.primaryColor))
-          : Padding(
+          ?  Center(
+        child: Lottie.asset(AppImageAsset.loading, width: 250, height: 250),
+      ) : Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,6 +142,14 @@ class _RecognizePageState extends State<RecognizePage> {
         _hasAllergyWords = _foundAllergyWords.isNotEmpty;
         _isBusy = false;
       });
+
+      // Automatically save the recognized text and result
+      addFileController.recognized_text.text = recognizedText.text;
+      addFileController.result.text = _hasAllergyWords
+          ? "Allergy Alert!\nFound potential allergens: ${_foundAllergyWords.join(', ')}"
+          : "All Clear!\nNo detected allergens in the scanned text";
+      addFileController.filePath = widget.path;
+      addFileController.addFile();
 
       textRecognizer.close();
     } catch (e) {
