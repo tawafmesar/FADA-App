@@ -3,7 +3,7 @@ class AppLink {
   static const String server = "http://10.0.2.2/app/FADA-App/src/backend/";
 
   static const String test = "$server/test.php";
-  static const String imagesstatic = "$server/upload" ;
+  static const String imagesstatic = "$server/upload/" ;
 
 
   static const String viewcategories = "$server/categories.php";
@@ -36,7 +36,11 @@ class AppLink {
 
 
 
+  // ================================= Scan History ========================== //
 
+  static const String scanhistoryadd = "$server/scanhistory/add.php";
+
+  static const String scanhistoryview = "$server/scanhistory/view.php";
 
 
 
