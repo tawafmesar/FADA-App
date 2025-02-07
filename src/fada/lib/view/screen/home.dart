@@ -1,3 +1,4 @@
+import 'package:fada/view/screen/scan_history_screen.dart';
 import 'package:fada/view/screen/scan_screen.dart';
 import 'package:flutter/material.dart';
 import '../widget/custom_app_bar.dart';
@@ -18,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Center(child: Text('Home Page', style: TextStyle(fontSize: 24))),
     ScanScreen(),
     Center(child: Text('Education Page', style: TextStyle(fontSize: 24))),
-    Center(child: Text('History Page', style: TextStyle(fontSize: 24))),
+    ScanHistoryScreen(),
   ];
 
   @override
@@ -71,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Education',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.work_history),
+              icon: Icon(Icons.archive ),
               label: 'History',
             ),
           ],
