@@ -4,6 +4,7 @@ class ScanHistoryModel {
   String? recognizedText;
   String? result;
   int? userId;
+  int? ScanType;
   String? dateTime;
 
   ScanHistoryModel(
@@ -12,6 +13,7 @@ class ScanHistoryModel {
         this.recognizedText,
         this.result,
         this.userId,
+        this.ScanType,
         this.dateTime});
 
   ScanHistoryModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class ScanHistoryModel {
     recognizedText = json['recognized_text'];
     result = json['result'];
     userId = json['user_id'];
+    ScanType = json['scan_type'];
     dateTime = json['date_time'];
   }
 
@@ -30,6 +33,7 @@ class ScanHistoryModel {
     data['recognized_text'] = this.recognizedText;
     data['result'] = this.result;
     data['user_id'] = this.userId;
+    data['scan_type'] = this.ScanType;
     data['date_time'] = this.dateTime;
     return data;
   }

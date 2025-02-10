@@ -1,12 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:fada/core/constant/color.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'dart:io';
+import 'package:fada/core/constant/color.dart';
+import 'package:fada/core/constant/imageasset.dart';
 
 import '../../controller/add_file_controller.dart';
-import '../../core/constant/imageasset.dart';
 import '../widget/custom_app_bar_with_back.dart';
 import '../widget/custom_drawer.dart';
 
@@ -30,53 +30,95 @@ class _RecognizePageState extends State<RecognizePage> {
   @override
   void initState() {
     super.initState();
-    final inputImage = InputImage.fromFilePath(widget.path!);
-    processImage(inputImage);
+    if (widget.path != null) {
+      final inputImage = InputImage.fromFilePath(widget.path!);
+      processImage(inputImage);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:const CustomAppBarWithBack(
+      appBar: const CustomAppBarWithBack(
         title: "Recognized Text",
         icon: Icons.text_fields,
-
       ),
-      drawer: CustomDrawer(),
+      drawer:  CustomDrawer(),
       body: _isBusy
-          ?  Center(
-        child: Lottie.asset(AppImageAsset.loading, width: 250, height: 250),
-      ) : Padding(
+          ? Center(
+        child: Lottie.asset(
+          AppImageAsset.loading,
+          width: 250,
+          height: 250,
+        ),
+      )
+          : Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              maxLines: null,
-              controller: controller,
-              style: Theme.of(context).textTheme.bodyLarge,
-              decoration: InputDecoration(
-                labelText: "Recognized Text",
-                hintText: "Text will appear here...",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(color: AppColor.primaryColor),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 1. Display the scanned image (if available)
+              if (widget.path != null)
+                Container(
+                  height: 250,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    image: DecorationImage(
+                      image: FileImage(File(widget.path!)),
+                      fit: BoxFit.cover,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(color: AppColor.primaryColor, width: 2),
-                ),
-                contentPadding: const EdgeInsets.all(20),
+              const SizedBox(height: 20),
+              // 2. Display the allergy result card
+              _buildAllergyStatusCard(),
+              const SizedBox(height: 20),
+              // 3. Display the recognized text
+              Text(
+                "Recognized Text",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    ?.copyWith(color: AppColor.primaryColor),
               ),
-            ),
-            const SizedBox(height: 20),
-            _buildAllergyStatusCard(),
-          ],
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.all(15),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: AppColor.primaryColor, width: 1.5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      blurRadius: 6,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Text(
+                  controller.text,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
+  /// Builds a status card that shows whether potential allergens were found.
   Widget _buildAllergyStatusCard() {
     return Container(
       width: double.infinity,
@@ -109,16 +151,13 @@ class _RecognizePageState extends State<RecognizePage> {
                     color: _hasAllergyWords ? Colors.red : Colors.green,
                   ),
                 ),
-                if (_hasAllergyWords)
-                  Text(
-                    "Found potential allergens: ${_foundAllergyWords.join(', ')}",
-                    style: const TextStyle(color: Colors.black87),
-                  )
-                else
-                  const Text(
-                    "No detected allergens in the scanned text",
-                    style: TextStyle(color: Colors.black87),
-                  ),
+                const SizedBox(height: 5),
+                Text(
+                  _hasAllergyWords
+                      ? "Found potential allergens: ${_foundAllergyWords.join(', ')}"
+                      : "No detected allergens in the scanned text",
+                  style: const TextStyle(color: Colors.black87),
+                ),
               ],
             ),
           ),
@@ -127,6 +166,7 @@ class _RecognizePageState extends State<RecognizePage> {
     );
   }
 
+  /// Processes the image using ML Kit to recognize text and checks for allergy words.
   void processImage(InputImage image) async {
     setState(() => _isBusy = true);
 
@@ -149,6 +189,8 @@ class _RecognizePageState extends State<RecognizePage> {
           ? "Allergy Alert!\nFound potential allergens: ${_foundAllergyWords.join(', ')}"
           : "All Clear!\nNo detected allergens in the scanned text";
       addFileController.filePath = widget.path;
+      addFileController.scan_type.text = "1";
+
       addFileController.addFile();
 
       textRecognizer.close();
