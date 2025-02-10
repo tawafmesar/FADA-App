@@ -44,9 +44,18 @@ class Crud {
     }
   }
   Future<Either<StatusRequest, Map>> addRequestWithImageOne(
-      url, data, File? image, [String? namerequest]) async {
+      String url, Map<String, dynamic> data, File? image, [String? namerequest]) async {
     if (namerequest == null) {
-      namerequest = "files";
+      namerequest = "file";
+    }
+
+    print("Request URL: $url");
+    print("Request Data: $data");
+    print("Request Name Field for File: $namerequest");
+    if (image != null) {
+      print("Image Path: ${image.path}");
+    } else {
+      print("No image provided.");
     }
 
     var uri = Uri.parse(url);
@@ -57,16 +66,21 @@ class Crud {
       var length = await image.length();
       var stream = http.ByteStream(image.openRead());
       stream.cast();
-      var multipartFile = http.MultipartFile(namerequest, stream, length,
-          filename: basename(image.path));
+      var multipartFile = http.MultipartFile(
+        namerequest,
+        stream,
+        length,
+        filename: basename(image.path),
+      );
+      print("Image file size: $length bytes");
       request.files.add(multipartFile);
     }
 
-    // add Data to request
+    // Debug print for data fields added to the request
     data.forEach((key, value) {
+      print("Adding field to request: $key = $value");
       request.fields[key] = value;
     });
-    // add Data to request
 
     try {
       // Send Request
@@ -75,20 +89,22 @@ class Crud {
       // For get Response Body
       var response = await http.Response.fromStream(myrequest);
 
+      print("Response Status Code: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print(response.body);
         Map responsebody = jsonDecode(response.body);
 
         // Check if "status" key is present in the response
         if (responsebody.containsKey("status")) {
-          print(responsebody);
+          print("Decoded Response: $responsebody");
           return Right(responsebody);
         } else {
-          // Handle missing required keys as per your requirement
+          print("Missing 'status' key in response");
           return const Left(StatusRequest.decodingFailure);
         }
       } else {
-        print(response.body);
+        print("Request failed with response body: ${response.body}");
         return const Left(StatusRequest.serverfailure);
       }
     } catch (e) {
@@ -97,6 +113,7 @@ class Crud {
       return const Left(StatusRequest.serverException);
     }
   }
+
 
 }
 

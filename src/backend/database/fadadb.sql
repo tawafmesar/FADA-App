@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 30, 2025 at 01:55 AM
+-- Generation Time: Feb 02, 2025 at 07:11 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -114,6 +114,41 @@ INSERT INTO `allergydb` (`id`, `ingredient_name`, `description`, `created_by_use
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `scanhistory`
+--
+
+CREATE TABLE `scanhistory` (
+  `scanhistory_id` int(11) NOT NULL,
+  `file_path` varchar(255) NOT NULL,
+  `recognized_text` text NOT NULL,
+  `result` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `date_time` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `scanhistory`
+--
+
+INSERT INTO `scanhistory` (`scanhistory_id`, `file_path`, `recognized_text`, `result`, `user_id`, `date_time`) VALUES
+(11, '3534Traditional-Brazilian-Food-MAIN.jpg', 'asdaspostman', 'postman', 11, '2025-01-30 20:27:18'),
+(12, '7830Traditional-Brazilian-Food-MAIN.jpg', 'asdaspostman', 'postman', 11, '2025-01-30 20:27:57'),
+(13, 'fail', 'He plays Tootball.\nShe dances gracefully.\nI drink water.\nThey swim in the sea.\nHe fixes the bike.\nThe car stops suddenly.\nl open the door.\nShe closes the window.\nHe studies for the exam.\nThe flowers bloom in spring.\nWe hike in the mountains.\nHe builds a house.\nThe dog chases the ball.\nI bake a cake.\nShe shops for clothes.\nHe wins the race.\nThe phone rings again.\nEnglishGrammarZone.Com', 'All Clear', 11, '2025-01-30 22:00:27'),
+(14, '9701Traditional-Brazilian-Food-MAIN.jpg', 'asdaspostman', 'postman', 11, '2025-01-30 23:06:04'),
+(15, '6627Simple-English-sentences-for-daily-use.jpg', 'testetstte', 'result.asdasdtext', 11, '2025-01-31 02:12:43'),
+(16, '7901image_cropper_1738289877071.jpg', 'Simple sentences\nI paint the wall.\nThey eat breakfast.\nThe bell rings loudly.\nHe plays football.\nShe dances gracefully.\nI drink water.\nThey swim in the sea.\nHe fixes the bike.\nThe car stops suddenly.\nlonen the door', 'All Clear', 11, '2025-01-31 02:18:07'),
+(17, '1448image_cropper_1738375117243.jpg', 'He plays Tootball.\nShe dances gracefully.\nI drink water.\nThey swim in the sea.\nHe fixes the bike.\nThe car stops suddenly.\nIopen the door.\nShe closes the window.\nHe studies for the exam.\nThe flowers bloom in spring.\nWe hike in the mountains.\nHe builds a house.', 'Allergy Alert', 11, '2025-02-01 01:59:03'),
+(18, '2388image_cropper_1738375274872.jpg', 'Simple sentences\nI paint the wall.\nThey eat breakfast.\nThe bell rings loudly.\nHe plays football.\nShe dances gracefully.\nI drink water.\nThey swim in the sea.\nHe fixes the bike.\nThe car stops suddenly.\nTopen the door.\nShe closes the window.\nHe studies for the exam.\nThe flowers bloom in spring.\nWe hike in the mountains.\nHe builds a house.\nThe dog chases the ball.\nI bake a cake.\nShe shops for clothes.\nHe wins the race.\nThe phone rings again.\nEnglishGramnarZone.Com', 'Allergy Alert', 11, '2025-02-01 02:01:33'),
+(19, '8327image_cropper_1738375999567.jpg', 'Tdrink water.\nThey swim in the sea.\nHe fixes the bike.\nThe car stops suddenly.\nlopen the door.\nShe closes the window.\nHe studies for the exam.\nThe flowers bloom in spring.\nWe hike in the mountains.\nHe builds a house.\nThe dog chases the ball.\nI bake a cake.\nShe shops for clothes.\nHe wins the race.\nThe phone rings again.\nEnglishGrammarZone.Com', 'Allergy Alert!\nFound potential allergens: the', 11, '2025-02-01 02:13:38'),
+(20, '9401image_cropper_1738376275971.jpg', 'Simple sentences\nI paint the wall.\nThey eat breakfast.\nThe bell rings loudly.\nHe plays football.\nShe dances gracefully.\nI drink water.\nThey swim in the sea.\nHe fixes the bike.\nThe car stops suddenly.\nTopen the door.\nShe closes the window.\nHe studies for the exam.\nThe flowers bloom in spring.\nWe hike in the mountains.\nHe builds a house.\nThe dog chases the ball.\nI bake a cake.\nShe shops for clothes.\nHe wins the race.\nThe phone rings again.\nEnglishGramnarZone.Com', 'Allergy Alert', 11, '2025-02-01 02:18:10'),
+(21, '5854image_cropper_1738377767231.jpg', '', 'All Clear!\nNo detected allergens in the scanned text', 11, '2025-02-01 02:42:55'),
+(22, '1969image_cropper_1738379482220.jpg', 'Simple sentences\nI paint the wall.\nThey eat breakfast.\nThe bell rings loudly.\nHe plays football.', 'Allergy Alert!\nFound potential allergens: the', 11, '2025-02-01 03:11:32'),
+(23, '7647image_cropper_1738379482220.jpg', 'Simple sentences\nI paint the wall.\nThey eat breakfast.\nThe bell rings loudly.\nHe plays football.', 'Allergy Alert!\nFound potential allergens: the', 11, '2025-02-01 03:11:37'),
+(24, '4025image_cropper_1738379538752.jpg', '', 'All Clear!\nNo detected allergens in the scanned text', 11, '2025-02-01 03:12:25');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `userallergen`
 --
 
@@ -136,7 +171,10 @@ INSERT INTO `userallergen` (`id`, `user_id`, `allergy_id`, `created_at`) VALUES
 (24, 11, 3, '2025-01-29 23:45:09'),
 (28, 11, 4, '2025-01-29 23:51:49'),
 (30, 11, 5, '2025-01-29 23:51:59'),
-(31, 11, 7, '2025-01-29 23:52:02');
+(31, 11, 7, '2025-01-29 23:52:02'),
+(32, 11, 26, '2025-02-01 01:58:16'),
+(33, 11, 12, '2025-02-01 02:42:26'),
+(34, 11, 14, '2025-02-01 02:42:36');
 
 -- --------------------------------------------------------
 
@@ -184,6 +222,13 @@ ALTER TABLE `allergydb`
   ADD KEY `created_by_user_id` (`created_by_user_id`);
 
 --
+-- Indexes for table `scanhistory`
+--
+ALTER TABLE `scanhistory`
+  ADD PRIMARY KEY (`scanhistory_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `userallergen`
 --
 ALTER TABLE `userallergen`
@@ -215,10 +260,16 @@ ALTER TABLE `allergydb`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
+-- AUTO_INCREMENT for table `scanhistory`
+--
+ALTER TABLE `scanhistory`
+  MODIFY `scanhistory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
 -- AUTO_INCREMENT for table `userallergen`
 --
 ALTER TABLE `userallergen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -241,6 +292,12 @@ ALTER TABLE `allergenic_derivatives`
 --
 ALTER TABLE `allergydb`
   ADD CONSTRAINT `allergydb_ibfk_1` FOREIGN KEY (`created_by_user_id`) REFERENCES `users` (`users_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `scanhistory`
+--
+ALTER TABLE `scanhistory`
+  ADD CONSTRAINT `scanhistory_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`users_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `userallergen`
