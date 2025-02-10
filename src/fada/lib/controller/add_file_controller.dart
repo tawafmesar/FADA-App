@@ -19,6 +19,8 @@ class AddFileControllerImp extends AddFileController {
 
   late TextEditingController recognized_text;
   late TextEditingController result;
+  late TextEditingController scan_type;
+
   String? user_id;
   String? filePath;
 
@@ -33,6 +35,7 @@ class AddFileControllerImp extends AddFileController {
   void onInit() {
     recognized_text = TextEditingController();
     result = TextEditingController();
+    scan_type = TextEditingController();
     user_id = myServices.sharedPreferences.getString("id");
     super.onInit();
   }
@@ -40,6 +43,8 @@ class AddFileControllerImp extends AddFileController {
   void dispose() {
     recognized_text.dispose();
     result.dispose();
+    scan_type.dispose();
+
     super.dispose();
   }
 
@@ -60,6 +65,8 @@ class AddFileControllerImp extends AddFileController {
       "recognized_text": recognized_text.text ,
       "result": result.text ,
       "user_id": user_id!,
+      "scan_type": scan_type.text,
+
     };
 
     print("data =======================   $data ");
