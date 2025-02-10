@@ -15,15 +15,13 @@ import '../widget/custom_app_bar_with_back.dart';
 import '../widget/custom_drawer.dart';
 import '../../controller/add_file_controller.dart';
 
-class ImageChat extends StatefulWidget {
-  /// When an imagePath is provided and autoCall is true,
-  /// the image is loaded automatically and getdata() is called.
+class AIScannerScreen extends StatefulWidget {
+
   final String? imagePath;
   final bool autoCall;
-  /// Pass the list of allergy words to check against the AI result.
   final List<String> allergyWords;
 
-  const ImageChat({
+  const AIScannerScreen({
     Key? key,
     this.imagePath,
     this.autoCall = false,
@@ -31,10 +29,10 @@ class ImageChat extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ImageChat> createState() => _ImageChatState();
+  State<AIScannerScreen> createState() => _ImageChatState();
 }
 
-class _ImageChatState extends State<ImageChat> {
+class _ImageChatState extends State<AIScannerScreen> {
   PlatformFile? pickedImage;
   Uint8List? imageBytes;
   String mytext = '';
