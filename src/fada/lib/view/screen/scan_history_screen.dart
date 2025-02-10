@@ -14,13 +14,14 @@ class ScanHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize your controller
     Get.put(ScanHistoryControllerImp());
     final ScanHistoryControllerImp controller = Get.put(ScanHistoryControllerImp());
 
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Scan History',
-        icon: Icons.archive ,
+        icon: Icons.archive,
         actions: [
           IconButton(
             icon: const Icon(Icons.update, color: Colors.white),
@@ -28,7 +29,8 @@ class ScanHistoryScreen extends StatelessWidget {
               controller.getScanHistory();
             },
           ),
-        ],),
+        ],
+      ),
       drawer: CustomDrawer(),
       body: GetBuilder<ScanHistoryControllerImp>(
         builder: (controller) {
@@ -51,15 +53,16 @@ class ScanHistoryScreen extends StatelessWidget {
     );
   }
 
+  // Returns a valid image URL if available
   String? _getValidImageUrl(String? filePath) {
     if (filePath == null || filePath.isEmpty || filePath == 'fail') return null;
     return AppLink.imagesstatic + filePath;
   }
 
+  // Build each history card with image preview, result, scan type, recognized text, and date
   Widget _buildHistoryCard(ScanHistoryModel item, String? imageUrl, BuildContext context) {
     return Card(
       elevation: 4,
-
       margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
@@ -82,6 +85,8 @@ class ScanHistoryScreen extends StatelessWidget {
                   children: [
                     _buildResultRow(item),
                     const SizedBox(height: 8),
+                    _buildScanTypeRow(item), // <-- New Scan Type Row
+                    const SizedBox(height: 8),
                     _buildRecognizedText(item),
                     const SizedBox(height: 8),
                     _buildDateRow(item),
@@ -95,33 +100,39 @@ class ScanHistoryScreen extends StatelessWidget {
     );
   }
 
+  // Build the image preview widget
   Widget _buildImagePreview(String? imageUrl) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        width: 80,
-        height: 80,
+        width: 100,
+        height: 100,
         color: Colors.grey[200],
         child: imageUrl != null
             ? Image.network(
           imageUrl,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, size: 40),
+          errorBuilder: (_, __, ___) =>
+          const Icon(Icons.broken_image, size: 40),
         )
             : const Icon(Icons.image_not_supported, size: 40),
       ),
     );
   }
 
+  // Build the result row with an icon and result text
   Widget _buildResultRow(ScanHistoryModel item) {
     return Row(
       children: [
         Icon(
-          item.result?.startsWith('All Clear') == true ? Icons.check_circle : Icons.warning,
-          color: item.result?.startsWith('All Clear') == true ? Colors.green : Colors.orange,
+          item.result?.startsWith('All Clear') == true
+              ? Icons.check_circle
+              : Icons.warning,
+          color: item.result?.startsWith('All Clear') == true
+              ? Colors.green
+              : Colors.orange,
           size: 20,
-        )
-        ,
+        ),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
@@ -138,11 +149,44 @@ class ScanHistoryScreen extends StatelessWidget {
     );
   }
 
+  // New function: Build the scan type row (shown on each card)
+  Widget _buildScanTypeRow(ScanHistoryModel item) {
+    String scanTypeText;
+    IconData scanTypeIcon;
+    if (item.ScanType == 1) {
+      scanTypeText = "Food ingredients labels";
+      scanTypeIcon = Icons.label;
+    } else if (item.ScanType == 2) {
+      scanTypeText = "Identify Food ingredients through AI";
+      scanTypeIcon = Icons.smart_toy;
+    } else {
+      scanTypeText = "Unknown scan type";
+      scanTypeIcon = Icons.help_outline;
+    }
+    return Row(
+      children: [
+        Icon(scanTypeIcon, size: 20, color: Colors.blue),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            scanTypeText,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Build the recognized text row
   Widget _buildRecognizedText(ScanHistoryModel item) {
     final String recognizedContent = item.recognizedText?.isNotEmpty == true
         ? item.recognizedText!
         : 'No text recognized';
-
     return Text(
       recognizedContent,
       maxLines: 1,
@@ -154,7 +198,7 @@ class ScanHistoryScreen extends StatelessWidget {
     );
   }
 
-
+  // Build the date row
   Widget _buildDateRow(ScanHistoryModel item) {
     return Row(
       children: [
@@ -171,6 +215,7 @@ class ScanHistoryScreen extends StatelessWidget {
     );
   }
 
+  // Show the full details modal bottom sheet
   void _showFullDetails(BuildContext context, ScanHistoryModel item, String? imageUrl) {
     final bool isAllClear = item.result?.toLowerCase().contains('all clear') ?? false;
     final String fullResult = item.result ?? 'No result available';
@@ -187,6 +232,7 @@ class ScanHistoryScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+            // Header Row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -196,13 +242,13 @@ class ScanHistoryScreen extends StatelessWidget {
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: AppColor.primaryColor,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 5.0,
-                          color: Colors.black26,
-                          offset: Offset(2.0, 2.0),
-                        ),
-                      ]
+                    shadows: [
+                      Shadow(
+                        blurRadius: 5.0,
+                        color: Colors.black26,
+                        offset: Offset(2.0, 2.0),
+                      ),
+                    ],
                   ),
                 ),
                 IconButton(
@@ -214,15 +260,15 @@ class ScanHistoryScreen extends StatelessWidget {
             const SizedBox(height: 10),
             const Divider(height: 2, color: AppColor.primaryColor),
             const SizedBox(height: 10),
-
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    // Image Preview in Details
                     if (imageUrl != null)
                       Container(
-                        height: 200,
+                        width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: Colors.grey[200],
@@ -236,6 +282,7 @@ class ScanHistoryScreen extends StatelessWidget {
                         ),
                       ),
                     const SizedBox(height: 20),
+                    // Result container
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(15),
@@ -279,7 +326,11 @@ class ScanHistoryScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    // Recognized Text Detail
                     _buildDetailSection('Recognized Text', recognizedContent),
+                    const SizedBox(height: 16),
+                    // New: Scan Type Detail Section
+                    _buildScanTypeDetail(item),
                   ],
                 ),
               ),
@@ -289,6 +340,43 @@ class ScanHistoryScreen extends StatelessWidget {
       ),
     );
   }
+
+  // New function: Build the scan type detail for the full details modal
+  Widget _buildScanTypeDetail(ScanHistoryModel item) {
+    String scanTypeText;
+    IconData scanTypeIcon;
+
+    if (item.ScanType == 1 || item.ScanType == '1' ) {
+      scanTypeText = "Food ingredients labels";
+      scanTypeIcon = Icons.label;
+    } else if (item.ScanType == 1 || item.ScanType == '1' ) {
+      scanTypeText = "Identify Food ingredients through AI";
+      scanTypeIcon = Icons.smart_toy;
+    } else {
+      scanTypeText = "Unknown scan type";
+      scanTypeIcon = Icons.help_outline;
+    }
+    return Container(
+      margin: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Icon(scanTypeIcon, color: Colors.blue),
+          const SizedBox(width: 8),
+          Text(
+            scanTypeText,
+            style: const TextStyle(fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Reusable detail section widget for full details modal
   Widget _buildDetailSection(String title, String content) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,15 +406,14 @@ class ScanHistoryScreen extends StatelessWidget {
     );
   }
 
-// Keep existing _buildShimmerLoading and _formatDate methods
-
+  // Shimmer loading widget
   Widget _buildShimmerLoading() {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
       child: ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: 6,
+        itemCount: 7,
         itemBuilder: (context, index) => Card(
           elevation: 4,
           margin: const EdgeInsets.only(bottom: 16),
@@ -342,6 +429,7 @@ class ScanHistoryScreen extends StatelessWidget {
     );
   }
 
+  // Format the date string from the model
   String _formatDate(String? dateString) {
     if (dateString == null) return 'Unknown date';
     try {
@@ -351,6 +439,4 @@ class ScanHistoryScreen extends StatelessWidget {
       return 'Invalid date';
     }
   }
-
-
 }
