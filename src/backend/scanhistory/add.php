@@ -5,6 +5,7 @@ include "../connect.php";
 $recognized_text = filterRequest("recognized_text");
 $result = filterRequest("result");
 $user_id = filterRequest("user_id");
+$scan_type = filterRequest("scan_type");
 
 $file_path = imageUpload("file");
 
@@ -17,7 +18,9 @@ if ($userExists) {
         "file_path" => $file_path,
         "recognized_text" => $recognized_text,
         "result" => $result,
-        "user_id" => $user_id
+        "user_id" => $user_id,
+        "scan_type" => $scan_type
+
     );
 
     insertData("scanhistory", $data);
