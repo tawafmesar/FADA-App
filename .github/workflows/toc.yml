@@ -1,0 +1,29 @@
+name: TOC Generator
+
+on:
+  push:
+    # run on pushes to default branch; adjust if you prefer e.g. pull_request
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  generateTOC:
+    name: Generate/Update TOC
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run TOC Generator (technote-space/toc-generator)
+        uses: technote-space/toc-generator@v4
+        with:
+          # target files to update (comma separated)
+          TARGET_PATH: README.md
+          # commit changes directly on push; set CREATE_PR:true to create PR instead
+          CREATE_PR: false
+          # set the commit message the action will use when updating README
+          COMMIT_MESSAGE: chore(docs): update Table of Contents
