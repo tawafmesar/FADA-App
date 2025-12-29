@@ -8,48 +8,36 @@
 
 ---
 
-<!-- START doctoc -->
-## Table of contents
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
 
-1. [Project Overview](#project-overview)
+- [Project Overview](#project-overview)
+- [Key Features](#key-features)
+- [App Screenshots](#app-screenshots)
+- [Technology Stack](#technology-stack)
+- [Repository structure (high-level)](#repository-structure-high-level)
+- [Quick Start — Local Development](#quick-start--local-development)
+  - [Prerequisites](#prerequisites)
+  - [Backend (PHP + MySQL)](#backend-php--mysql)
+  - [Frontend (Flutter)](#frontend-flutter)
+- [Configuration and Environment](#configuration-and-environment)
+- [Database](#database)
+- [API Reference (Summary)](#api-reference-summary)
+  - [Authentication](#authentication)
+  - [Forgot password](#forgot-password)
+  - [Allergy Management](#allergy-management)
+  - [Scan History](#scan-history)
+- [Testing](#testing)
+- [Building & Release](#building--release)
+- [Contributing](#contributing)
+- [Security & Privacy Notes](#security--privacy-notes)
+- [Design assets & diagrams](#design-assets--diagrams)
+- [License](#license)
+- [Contact / Maintainers](#contact--maintainers)
+- [Appendix — Useful commands & tips](#appendix--useful-commands--tips)
 
-2. [Key Features](#key-features)
-
-3. [App Screenshots](#app-screenshots)
-
-4. [Technology Stack](#technology-stack)
-
-5. [Repository Structure](#repository-structure)
-
-6. [Quick Start — Local Development](#quick-start--local-development)
-
-   * Backend (PHP + MySQL)
-
-   * Frontend (Flutter)
-
-7. [Configuration and Environment](#configuration-and-environment)
-
-8. [Database](#database)
-
-9. [API Reference (Summary)](#api-reference-summary)
-
-10. [Testing](#testing)
-
-11. [Building & Release](#building--release)
-
-12. [Contributing](#contributing)
-
-13. [Security & Privacy Notes](#security--privacy-notes)
-
-14. [Design Assets & Diagrams](#design-assets--diagrams)
-
-15. [License](#license)
-
-16. [Contact / Maintainers](#contact--maintainers)
-
----
-
-<!-- END doctoc -->
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 <a name="project-overview"></a>
