@@ -8,6 +8,7 @@
 
 ---
 
+<!-- START doctoc -->
 ## Table of contents
 
 1. [Project Overview](#project-overview)
@@ -47,6 +48,9 @@
 16. [Contact / Maintainers](#contact--maintainers)
 
 ---
+
+<!-- END doctoc -->
+
 
 <a name="project-overview"></a>
 
