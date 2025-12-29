@@ -5,10 +5,10 @@ on:
     branches:
       - main
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write   # allow creating PRs and writing files via GITHUB_TOKEN
 
 jobs:
   generateTOC:
@@ -23,6 +23,9 @@ jobs:
       - name: "Run TOC Generator (technote-space/toc-generator)"
         uses: technote-space/toc-generator@v4
         with:
-          TARGET_PATH: "README.md"
-          CREATE_PR: "false"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_PATHS: "README.md"                # <-- note plural
+          CREATE_PR: "true"                        # create a PR instead of forcing direct push
           COMMIT_MESSAGE: "chore(docs): update Table of Contents"
+          PR_TITLE: "chore(docs): update Table of Contents (auto-generated)"
+          PR_BODY: "This PR updates the README Table of Contents using technote-space/toc-generator."
