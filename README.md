@@ -1,7 +1,7 @@
 # FADA — Food Allergy Detection & Analysis Application (FADA)
 
+<img width="2991" height="969" alt="Fadaa" src="https://github.com/user-attachments/assets/2c6b1ad7-c3a1-45b1-9478-71006ffce1fe" />
 
-<img width="3987" height="1292" alt="fada" src="https://github.com/user-attachments/assets/71f440a7-6263-4b89-b672-abfe8476ad00" />
 
 
 > This document provides a clear project overview, technical architecture, deployment and development instructions, API references, and contribution guidelines suitable for professional audiences (maintainers, reviewers, and developers).
