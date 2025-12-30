@@ -164,19 +164,51 @@ These instructions assume you are preparing this repository to be public and wan
 
 * Optional: Android emulator (note Android emulator address mapping `10.0.2.2` is used by default in the app).
 
-### Backend (PHP + MySQL)
+# ### Backend (PHP + MySQL)
 
 1. Copy the backend folder to your web server document root. Example paths:
 
    * Linux: `/var/www/html/fada-backend`
-
    * Windows (XAMPP): `C:\xampp\htdocs\fada-backend`
 
-2. Import the database schema:
+2. Import the database schema.
 
-```bash
-mysql -u root -p < src/backend/database/fadadb.sql
-```
+   **2.a — Using MySQL CLI**
+
+   ```bash
+   mysql -u root -p < src/backend/database/fadadb.sql
+   ```
+
+   **2.b — Import database using phpMyAdmin (GUI)**
+   If you prefer a GUI, `phpMyAdmin` provides a simple way to import the SQL schema file.
+
+   ### Steps (phpMyAdmin)
+
+   1. Open phpMyAdmin in your browser (example):
+      `http://localhost/phpmyadmin` or the path provided by your hosting control panel.
+
+   2. Create the database (if it does not exist):
+
+      * Click **Databases** → enter `fadadb` (or your DB name) → choose collation `utf8mb4_unicode_ci` → **Create**.
+
+      *Or run this SQL in phpMyAdmin → **SQL** tab:*
+
+      ```sql
+      CREATE DATABASE IF NOT EXISTS fadadb
+        CHARACTER SET utf8mb4
+        COLLATE utf8mb4_unicode_ci;
+      ```
+
+   3. Select the newly created database from the left sidebar.
+
+   4. Import the SQL file:
+
+      * Click the **Import** tab.
+      * Click **Choose File** and select `src/backend/database/fadadb.sql` from your repository.
+      * Ensure **Format** is `SQL`.
+      * Click **Go** and wait for the upload/import to finish.
+
+   5. Verify tables: after import completes, phpMyAdmin will show the list of tables (e.g., `users`, `allergen`, `userallergen`, `scanhistory`).
 
 3. Configure the backend environment variables. Create a `.env` file inside `src/backend/` and set the following variables:
 
@@ -191,7 +223,10 @@ SMTP_PASSWORD=your_smtp_password
 
 > The backend uses `src/backend/env.php` to load this `.env` file. PHPMailer is bundled under `src/backend/includes/`.
 
-4. Ensure the PHP server can write to `upload/` if present (for images), and that `connect.php` has correct permissions.
+4. Ensure filesystem permissions:
+
+   * Ensure the PHP server can write to `upload/` if present (for images).
+   * Make sure `connect.php` (and other config files) have the correct permissions for your environment (not world-writable; readable by the web server user).
 
 5. Test an endpoint with `curl` or Postman. For example (adjust `SERVER_URL` to your installation):
 
@@ -199,6 +234,8 @@ SMTP_PASSWORD=your_smtp_password
 curl -X POST "http://localhost/fada-backend/auth/signup.php" \
   -F "username=alice" -F "password=secret" -F "email=alice@example.com"
 ```
+
+
 
 ### Frontend (Flutter)
 
